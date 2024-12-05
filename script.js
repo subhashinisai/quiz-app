@@ -5,7 +5,7 @@ const nextBtn=document.querySelector('.nextBtn');
 const scoreCard=document.querySelector('.scoreCard');
 const alert=document.querySelector('.alert');
 const startbtn=document.querySelector('.startbtn');
-
+const timer=document.querySelector('.timer');
 
 //array of objects with question and choices with correct answer
 const quiz=[
@@ -34,6 +34,8 @@ const quiz=[
 let currentQuestionIndex=0;
 let score=0;
 let quizOver=false;
+let timeLeft=15;
+let timerID=null;
 
 //arrow function to show questions
 const showQuestions=()=>{
@@ -57,7 +59,9 @@ for(let i=0;i<questionDetails.choices.length;i++){
     });
 
 }
-
+if(currentQuestionIndex<quiz.length){
+    startTimer();
+}
 }
 
 
@@ -74,12 +78,14 @@ const checkAnswer=()=>{
     }else{
         displayAlert(`wrong answer! ${quiz[currentQuestionIndex].answer} is the correct answer`);
     }
+    timeLeft=15;
     currentQuestionIndex++;
     if(currentQuestionIndex<quiz.length){
       showQuestions();
     }else{
         showScore();
-        quizOver=true;
+        stopTimer();
+       
     }
    
 }
@@ -93,10 +99,9 @@ const showScore =()=>{
     scoreCard.textContent=`You Scored ${score} out of ${quiz.length}!`;
     displayAlert("You have completed this Quiz!");
     nextBtn.textContent="Play Again";
-    nextBtn.addEventListener('click',()=>{
+    quizOver=true;
+    timer.style.display="none";
   
-    });
-
 }
 
 
@@ -110,16 +115,62 @@ const displayAlert= (msg) =>{
 }
 
 
+//function to start timer
+const startTimer=()=>{
+    clearInterval(timerID); //check for existing timer
+    timer.textContent=timeLeft;
+    const countDown=()=>{
+        timer.textContent=timeLeft;
+        timeLeft--;
+        if(timeLeft===0){
+            const confirmUser=confirm("Time Up!!!!, Do you want to play the quiz again");
+            if(confirmUser){
+                timeLeft=15;
+                startQuiz();
+            }else{
+                startbtn.style.display="block";
+                container.style.display="none";
+                return;
+            }
+        }
+    }
+   timerID = setInterval(countDown,1000);  
+}
+
+//function to stop timer
+const stopTimer=()=>{
+clearInterval(timerID);
+}
+
+//function to start a quiz
+const startQuiz=()=>{
+    currentQuestionIndex = 0;
+    score = 0;
+    timeLeft = 15;
+    quizOver = false;
+    timer.style.display="flex";
+    shufflequestions();
+}
+
+//function to shuffle the questions of the quiz
+const shufflequestions=()=>{
+    for(let i=quiz.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [quiz[i],quiz[j]]=[quiz[j],quiz[i]];
+    }
+    currentQuestionIndex=0;
+    showQuestions();
+}
+
+
+
 //adding event listener to start button
 startbtn.addEventListener('click',()=>{
   startbtn.style.display="none";
   container.style.display="block";
-  showQuestions();
+  startQuiz();
 });
 
-
-
-// showQuestions();
 
 nextBtn.addEventListener('click',() => {
     const selectedChoice=document.querySelector('.choice.selected');
@@ -127,7 +178,7 @@ nextBtn.addEventListener('click',() => {
         nextBtn.textContent="Next";
         scoreCard.textContent="";
         currentQuestionIndex=0;
-        showQuestions();
+        startQuiz();
         quizOver=false;
        }else{
         checkAnswer();
