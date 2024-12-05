@@ -4,7 +4,7 @@ const choicesBox=document.querySelector('.choices');
 const nextBtn=document.querySelector('.nextBtn');
 const scoreCard=document.querySelector('.scoreCard');
 const alert=document.querySelector('.alert');
-
+const startbtn=document.querySelector('.startbtn');
 
 
 //array of objects with question and choices with correct answer
@@ -72,7 +72,7 @@ const checkAnswer=()=>{
         displayAlert("correct answer!");
         score++;
     }else{
-        displayAlert("wrong answer!");
+        displayAlert(`wrong answer! ${quiz[currentQuestionIndex].answer} is the correct answer`);
     }
     currentQuestionIndex++;
     if(currentQuestionIndex<quiz.length){
@@ -100,13 +100,26 @@ const showScore =()=>{
 }
 
 
-
+//function to show alert
 const displayAlert= (msg) =>{
     alert.style.display="block";
     alert.textContent=msg;
+    setTimeout(()=>{
+    alert.style.display="none";
+    },3000);
 }
 
-showQuestions();
+
+//adding event listener to start button
+startbtn.addEventListener('click',()=>{
+  startbtn.style.display="none";
+  container.style.display="block";
+  showQuestions();
+});
+
+
+
+// showQuestions();
 
 nextBtn.addEventListener('click',() => {
     const selectedChoice=document.querySelector('.choice.selected');

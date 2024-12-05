@@ -18,7 +18,7 @@ body{
     max-width: 850px;
     padding: 30px;
     text-align: center;
-
+    display: none;
 }
 .container h1{
     font-size: 36px;
@@ -83,4 +83,10 @@ body{
     position: absolute;
     top: 0;
     display: none;
+}
+.startbtn{
+    width: 15%;
+    padding-block: 20px;
+    text-align: center;
+
 }
