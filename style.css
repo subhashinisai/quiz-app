@@ -44,10 +44,17 @@ body{
     text-align: left;
     width: 60%;
     cursor: pointer;
+    opacity:0;
+    transform:translateY(50%);
+    animation:fade-in 0.5s ease forwards;
 
 }
 .choice:hover{
     background-color: #ddd;
+}
+.choice.selected{
+    background-color: #007bff;
+    color: white;
 }
 .btn{
     width: 60%;
@@ -65,10 +72,7 @@ body{
     background-color: #08780c ;
 
 }
-.choice.selected{
-    background-color: #007bff;
-    color: white;
-}
+
 .scoreCard{
     font-size: 24px;
     margin-top: 20px;
@@ -105,4 +109,53 @@ body{
     display: flex;
     justify-self: center;
     align-items: center;
+    animation: pulse 1s ease-in-out infinite;
+}
+/* adding animation to timer */
+@keyframes pulse{
+        0%{
+            transform:scale(1);
+        }
+        50%{
+            transform:scale(1.2);
+        }
+        100%{
+            transform:scale(1);
+        }
+    }
+
+
+/* adding animation to choices  */
+@keyframes fade-in{
+    
+    0%{
+        opacity: 0;
+        transform: translateY(50%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@media  screen and (max-width:900px){
+    .container {
+        width: 100%;
+        margin-top: 50px;
+    }
+    .container h1{
+        font-size: 24px;
+    }
+    .container.question{
+        font-size: 22px;
+    }
+    .timer{
+        width:50px;
+        height:50px;
+        font-size:20px;
+    }
+    .startbtn{
+        width:50%;
+    }
 }
